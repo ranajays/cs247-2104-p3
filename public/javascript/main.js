@@ -26,7 +26,8 @@
                          ["lmao", "rolling"],
                          ["bored", "bored"],
                          ["used to", "nostalgic"],
-                         ["I miss", "nostalgic"]];
+                         ["miss", "nostalgic"],
+                         ["nostalgic", "nostalgic"]];
 
   $(document).ready(function(){
     connect_to_chat_firebase();
@@ -44,7 +45,8 @@
     }else{
       fb_chat_room_id = Math.random().toString(36).substring(7);
     }
-    display_msg({m:"Share this url with your friend to join this chat: "+ document.location.origin+"/#"+fb_chat_room_id,c:"red"})
+    display_msg({m:"Share this url with your friend to join this chat: "+ document.location.origin+"/#"+fb_chat_room_id,c:"red"});
+    display_msg({m:"Emoticon key: lol, haha, :), happy, :(, sad, :D, !, rofl, bored, used to, nostalgic, and more!",c:"green"});
 
     // set up variables to access firebase data structure
     var fb_new_chat_room = fb_instance.child('chatrooms').child(fb_chat_room_id);

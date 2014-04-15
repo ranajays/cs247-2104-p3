@@ -81,16 +81,16 @@ a {
   }
 }
 .lol {
-  -webkit-filter: hue-rotate(270deg);
-  filter: hue-rotate(270deg);
+  -webkit-filter: blur(1px) contrast(3);
+  filter: blur(1px) contrast(3);
 }
 .happy {
   -webkit-filter: brightness(1.4) contrast(1.4);
   filter: brightness(1.4) contrast(1.4);
 }
 .sad {
-  -webkit-filter: blur(1px) contrast(3);
-  filter: blur(1px) contrast(3);
+  -webkit-filter: hue-rotate(270deg);
+  filter: hue-rotate(270deg);
 }
 .exaggerated {
   -webkit-filter: saturate(10);
