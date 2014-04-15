@@ -61,20 +61,70 @@ a {
   padding: 50px 0;
 }
 
-#videobox {
-  overflow:auto;
+::-webkit-scrollbar {
+    -webkit-appearance: none;
+    width: 7px;
+}
+::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+    background-color: rgba(0,0,0,.5);
+    -webkit-box-shadow: 0 0 1px rgba(255,255,255,.5);
+}
+
+@video_width: 120px;
+@video_height: 90px;
+
+#video_timeline-outer {
+  position: fixed;
+  bottom: 40px;
+  overflow-x: scroll;
+  width: @video_width*7;
+  //max-height: @video_height;
+}
+
+#video_timeline-inner {
+  //min-width: @video_width*5*4;
+  white-space: nowrap;
+  overflow: auto;
+}
+
+@keyframes spin {
+    0%  {-webkit-transform: rotate(0deg);}
+    100% {-webkit-transform: rotate(360deg);}   
 }
 
 .lol {
- -webkit-filter: invert(.8);
-  filter: invert(.8);
+  -webkit-filter: blur(1px) contrast(3);
+  filter: blur(1px) contrast(3);
 }
 
 .happy {
-  -webkit-filter: saturate(4);
-  filter: saturate(4);
+  -webkit-filter: brightness(1.4) contrast(1.4);
+  filter: brightness(1.4) contrast(1.4);
 }
 
 .sad {
-  -webkit-filter: sepia(100%);
+
+  -webkit-filter: hue-rotate(270deg);
+  filter: hue-rotate(270deg);
+}
+
+.exaggerated {
+  -webkit-filter: saturate(5);
+  filter: saturate(5);
+}
+
+.rolling {
+  //animation: spin 4s infinite linear;
+  -webkit-transform: rotate(180deg);
+}
+
+.bored {
+  -webkit-filter: grayscale(1);
+  filter: grayscale(1);
+}
+
+.nostalgic {
+  -webkit-filter: blur(1px) sepia(1);
+  filter: blur(1px) sepia(1);
 }

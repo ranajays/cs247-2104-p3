@@ -6,6 +6,29 @@
   var cur_video_blob = null;
   var fb_instance;
 
+  var emotion_options = [["lol", "lol"],
+                         ["haha", "lol"],
+                         [":)", "happy"],
+                         [":-)", "happy"],
+                         ["=)", "happy"],
+                         ["happy", "happy"],
+                         ["glad", "happy"],
+                         [":(", "sad"],
+                         [":-(", "sad"],
+                         ["=(", "sad"],
+                         ["sad", "sad"],
+                         ["upset", "sad"],
+                         [":D", "exaggerated"],
+                         [":-D", "exaggerated"],
+                         ["=D", "exaggerated"],
+                         ["!", "exaggerated"],
+                         ["rofl", "rolling"],
+                         ["lmao", "rolling"],
+                         ["bored", "bored"],
+                         ["used to", "nostalgic"],
+                         ["miss", "nostalgic"],
+                         ["nostalgic", "nostalgic"]];
+
   $(document).ready(function(){
     connect_to_chat_firebase();
     connect_webcam();
@@ -13,7 +36,7 @@
 
   function connect_to_chat_firebase(){
     /* Include your Firebase link here!*/
-    fb_instance = new Firebase("https://amber-fire-5565.firebaseio.com/");
+    fb_instance = new Firebase("https://gsroth-p3-v1.firebaseio.com");
 
     // generate new chatroom id or use existing id
     var url_segments = document.location.href.split("/#");
@@ -22,7 +45,8 @@
     }else{
       fb_chat_room_id = Math.random().toString(36).substring(7);
     }
-    display_msg({m:"Share this url with your friend to join this chat: "+ document.location.origin+"/#"+fb_chat_room_id,c:"red"})
+    display_msg({m:"Share this url with your friend to join this chat: "+ document.location.origin+"/#"+fb_chat_room_id,c:"red"});
+    display_msg({m:"Emoticon key: lol, haha, :), happy, :(, sad, :D, !, rofl, bored, used to, nostalgic, and more!",c:"green"});
 
     // set up variables to access firebase data structure
     var fb_new_chat_room = fb_instance.child('chatrooms').child(fb_chat_room_id);
@@ -50,50 +74,50 @@
     $("#submission input").keydown(function( event ) {
       if (event.which == 13) {
         var emotion = get_emotion($(this).val());
-        if(emotion){
+        if (emotion) {
           fb_instance_stream.push({m:username+": " +$(this).val(), v:cur_video_blob, c: my_color, e: emotion});
-        }else{
+        } else {
           fb_instance_stream.push({m:username+": " +$(this).val(), c: my_color});
         }
         $(this).val("");
-        scroll_to_bottom(0);
+
+        document.getElementById("video_timeline-inner").scrollLeft = document.getElementById("video_timeline-inner").scrollWidth;
       }
+
     });
 
     // scroll to bottom in case there is already content
     scroll_to_bottom(1300);
+
   }
 
   // creates a message node and appends it to the conversation
   function display_msg(data){
     $("#conversation").append("<div class='msg' style='color:"+data.c+"'>"+data.m+"</div>");
     if(data.v){
-      // // for video element
-      // var video = document.createElement("video");
-      // video.autoplay = true;
-      // video.controls = false; // optional
-      // video.loop = true;
-      // video.width = 120;
+      // for video element
+      var video = document.createElement("video");
+      video.autoplay = true;
+      video.controls = false; // optional
+      video.loop = true;
+      video.width = 120;
+      video.className += data.e;
 
-      // var source = document.createElement("source");
-      // source.src =  URL.createObjectURL(base64_to_blob(data.v));
-      // source.type =  "video/webm";
+      var source = document.createElement("source");
+      source.src =  URL.createObjectURL(base64_to_blob(data.v));
+      source.type =  "video/webm";
 
-      // video.appendChild(source);
+      video.appendChild(source);
+
+      // var videoSpan = document.createElement("span");
+      // if (data.e == "sad") videoSpan.className += " sadSpan"
+      // videoSpan.appendChild(video);
 
       // for gif instead, use this code below and change mediaRecorder.mimeType in onMediaSuccess below
-      var video = document.createElement("img");
-      video.src = URL.createObjectURL(base64_to_blob(data.v));
-      video.width = 120;
+      // var video = document.createElement("img");
+      // video.src = URL.createObjectURL(base64_to_blob(data.v));
 
-      // div action for filters
-      var videoDiv = document.createElement("span");
-      videoDiv.className += data.e;
-      videoDiv.appendChild(video);
-
-      document.getElementById("videobox").appendChild(videoDiv);
-      var $videobox = $("#videobox");
-      $videobox.parent().append($videobox);
+      document.getElementById("video_timeline-inner").appendChild(video);
     }
   }
 
@@ -101,6 +125,7 @@
     // scroll to bottom of div
     setTimeout(function(){
       $("html, body").animate({ scrollTop: $(document).height() }, 200);
+      console.log("scrolled to bottom!");
     },wait_time);
   }
 
@@ -141,8 +166,8 @@
       var mediaRecorder = new MediaStreamRecorder(stream);
       var index = 1;
 
-      // mediaRecorder.mimeType = 'video/webm';
-      mediaRecorder.mimeType = 'image/gif';
+      mediaRecorder.mimeType = 'video/webm';
+      // mediaRecorder.mimeType = 'image/gif';
       // make recorded media smaller to save some traffic (80 * 60 pixels, 3*24 frames)
       mediaRecorder.video_width = video_width/2;
       mediaRecorder.video_height = video_height/2;
@@ -174,13 +199,13 @@
 
   // check to see if a message qualifies to be replaced with video.
   var get_emotion = function(msg){
-    var options = ["lol",":)",":("];
-    var emotions = ["lol", "happy", "sad"];
-    for(var i=0;i<options.length;i++){
-      if(msg.indexOf(options[i])!= -1){
-        return emotions[i];
+    for(var i=0;i<emotion_options.length;i++){
+      if(msg.indexOf(emotion_options[i][0])!=-1){
+        //console.log(emotion_options[i][1]);
+        return emotion_options[i][1];
       }
     }
+    //console.log("null");
     return null;
   }
 

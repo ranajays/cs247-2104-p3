@@ -53,17 +53,57 @@ a {
   text-align: center;
   padding: 50px 0;
 }
-#videobox {
+::-webkit-scrollbar {
+  -webkit-appearance: none;
+  width: 7px;
+}
+::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+  background-color: rgba(0, 0, 0, 0.5);
+  -webkit-box-shadow: 0 0 1px rgba(255, 255, 255, 0.5);
+}
+#video_timeline-outer {
+  position: fixed;
+  bottom: 40px;
+  overflow-x: scroll;
+  width: 840px;
+}
+#video_timeline-inner {
+  white-space: nowrap;
   overflow: auto;
 }
-.lol {
-  -webkit-filter: invert(0.8);
-  filter: invert(0.8);
+@keyframes spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
 }
-.saturate {
-  -webkit-filter: saturate(4);
-  filter: saturate(4);
+.lol {
+  -webkit-filter: blur(1px) contrast(3);
+  filter: blur(1px) contrast(3);
+}
+.happy {
+  -webkit-filter: brightness(1.4) contrast(1.4);
+  filter: brightness(1.4) contrast(1.4);
 }
 .sad {
-  -webkit-filter: sepia(100%);
+  -webkit-filter: hue-rotate(270deg);
+  filter: hue-rotate(270deg);
+}
+.exaggerated {
+  -webkit-filter: saturate(10);
+  filter: saturate(10);
+}
+.rolling {
+  -webkit-transform: rotate(180deg);
+}
+.bored {
+  -webkit-filter: grayscale(1);
+  filter: grayscale(1);
+}
+.nostalgic {
+  -webkit-filter: blur(1px) sepia(1);
+  filter: blur(1px) sepia(1);
 }
